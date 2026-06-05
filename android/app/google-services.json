@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "125347020717",
+    "project_id": "dating-app-e0d83",
+    "storage_bucket": "dating-app-e0d83.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:125347020717:android:931e43eff9b09fb1fe6b24",
+        "android_client_info": {
+          "package_name": "com.company.dating_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvKgnyS8ab9SrK4vxkdi1j3y2HL3MqK80"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:125347020717:android:bf9ef395cdecc561fe6b24",
+        "android_client_info": {
+          "package_name": "com.example.kazi_connect_kenya"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvKgnyS8ab9SrK4vxkdi1j3y2HL3MqK80"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
