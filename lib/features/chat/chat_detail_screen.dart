@@ -1,8 +1,40 @@
 import 'package:flutter/material.dart';
 import '../../core/theme.dart';
 
-class ChatDetailScreen extends StatelessWidget {
+class ChatDetailScreen extends StatefulWidget {
   const ChatDetailScreen({super.key});
+
+  @override
+  State<ChatDetailScreen> createState() => _ChatDetailScreenState();
+}
+
+class _ChatDetailScreenState extends State<ChatDetailScreen> {
+  final TextEditingController _messageController = TextEditingController();
+  final List<Map<String, dynamic>> _messages = [
+    {"message": "Hello Sarah, I'm interested in the Nanny position.", "isMe": false, "time": "10:00 AM"},
+    {"message": "Hi Mercy! Great. Do you have experience with toddlers?", "isMe": true, "time": "10:02 AM"},
+    {"message": "Yes, I've worked with 3-year-olds for over 2 years now.", "isMe": false, "time": "10:05 AM"},
+    {"message": "That's perfect. When are you available for a quick interview?", "isMe": true, "time": "10:06 AM"},
+  ];
+
+  void _sendMessage() {
+    if (_messageController.text.trim().isEmpty) return;
+
+    setState(() {
+      _messages.add({
+        "message": _messageController.text,
+        "isMe": true,
+        "time": "10:10 AM", // In a real app, this would be the current time
+      });
+      _messageController.clear();
+    });
+  }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +66,17 @@ class ChatDetailScreen extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child: ListView(
+            child: ListView.builder(
               padding: const EdgeInsets.all(20),
-              children: const [
-                _ChatBubble(message: "Hello Sarah, I'm interested in the Nanny position.", isMe: false, time: "10:00 AM"),
-                _ChatBubble(message: "Hi Mercy! Great. Do you have experience with toddlers?", isMe: true, time: "10:02 AM"),
-                _ChatBubble(message: "Yes, I've worked with 3-year-olds for over 2 years now.", isMe: false, time: "10:05 AM"),
-                _ChatBubble(message: "That's perfect. When are you available for a quick interview?", isMe: true, time: "10:06 AM"),
-              ],
+              itemCount: _messages.length,
+              itemBuilder: (context, index) {
+                final msg = _messages[index];
+                return _ChatBubble(
+                  message: msg['message'],
+                  isMe: msg['isMe'],
+                  time: msg['time'],
+                );
+              },
             ),
           ),
           _buildMessageInput(),
@@ -63,6 +98,8 @@ class ChatDetailScreen extends StatelessWidget {
             IconButton(onPressed: () {}, icon: const Icon(Icons.add, color: AppTheme.emeraldGreen)),
             Expanded(
               child: TextField(
+                controller: _messageController,
+                onSubmitted: (_) => _sendMessage(),
                 decoration: InputDecoration(
                   hintText: 'Type a message...',
                   fillColor: Colors.grey.shade100,
@@ -73,7 +110,10 @@ class ChatDetailScreen extends StatelessWidget {
             const SizedBox(width: 12),
             CircleAvatar(
               backgroundColor: AppTheme.emeraldGreen,
-              child: IconButton(onPressed: () {}, icon: const Icon(Icons.send, color: Colors.white, size: 20)),
+              child: IconButton(
+                onPressed: _sendMessage,
+                icon: const Icon(Icons.send, color: Colors.white, size: 20),
+              ),
             ),
           ],
         ),

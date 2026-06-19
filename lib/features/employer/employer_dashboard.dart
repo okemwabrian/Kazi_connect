@@ -25,7 +25,7 @@ class EmployerDashboard extends StatelessWidget {
           children: [
             _buildWelcomeSection(),
             const SizedBox(height: 24),
-            _buildStatsGrid(),
+            _buildStatsGrid(context),
             const SizedBox(height: 32),
             const Text(
               'Hiring Trends',
@@ -69,7 +69,7 @@ class EmployerDashboard extends StatelessWidget {
     );
   }
 
-  Widget _buildStatsGrid() {
+  Widget _buildStatsGrid(BuildContext context) {
     return GridView.count(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -78,10 +78,34 @@ class EmployerDashboard extends StatelessWidget {
       mainAxisSpacing: 16,
       childAspectRatio: 1.5,
       children: [
-        _StatCard(label: 'Total Hires', value: '12', icon: Icons.people_alt, color: AppTheme.emeraldGreen),
-        _StatCard(label: 'Open Jobs', value: '4', icon: Icons.work, color: AppTheme.deepNavy),
-        _StatCard(label: 'Applications', value: '28', icon: Icons.description, color: AppTheme.gold),
-        _StatCard(label: 'Avg. Rating', value: '4.8', icon: Icons.star, color: Colors.orange),
+        _StatCard(
+          label: 'Total Hires',
+          value: '12',
+          icon: Icons.people_alt,
+          color: AppTheme.emeraldGreen,
+          onTap: () => context.push('/my-workers'),
+        ),
+        _StatCard(
+          label: 'Open Jobs',
+          value: '4',
+          icon: Icons.work,
+          color: AppTheme.deepNavy,
+          onTap: () => context.push('/my-jobs'),
+        ),
+        _StatCard(
+          label: 'Applications',
+          value: '28',
+          icon: Icons.description,
+          color: AppTheme.gold,
+          onTap: () => context.push('/applications'),
+        ),
+        _StatCard(
+          label: 'Avg. Rating',
+          value: '4.8',
+          icon: Icons.star,
+          color: Colors.orange,
+          onTap: () => context.push('/reviews'),
+        ),
       ],
     );
   }
@@ -179,31 +203,46 @@ class _StatCard extends StatelessWidget {
   final String value;
   final IconData icon;
   final Color color;
+  final VoidCallback onTap;
 
-  const _StatCard({required this.label, required this.value, required this.icon, required this.color});
+  const _StatCard({
+    required this.label,
+    required this.value,
+    required this.icon,
+    required this.color,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Icon(icon, color: color),
-          Row(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.8),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.black.withOpacity(0.05)),
+            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
-              Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.deepNavy)),
+              Icon(icon, color: color),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                  Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.deepNavy)),
+                ],
+              ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
